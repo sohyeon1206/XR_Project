@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 1853166093815035156}
   - component: {fileID: 1432292291690277363}
   - component: {fileID: 3051218837947669955}
+  - component: {fileID: 177411905121403507}
   m_Layer: 0
   m_Name: Monster.vox
   m_TagString: Monster
@@ -146,6 +147,19 @@ MonoBehaviour:
   EnemyPivot: {fileID: 3598263413327797690}
   firePoint: {fileID: 3263282263105990982}
   fireRate: 1
+--- !u!114 &177411905121403507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4104366933567126601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8cb56e745024ba8b573ef788a64803, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hp: 5
 --- !u!1 &5005865449498592400
 GameObject:
   m_ObjectHideFlags: 0
