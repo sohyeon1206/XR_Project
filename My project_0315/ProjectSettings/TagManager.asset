@@ -8,6 +8,8 @@ TagManager:
   - Monster
   - Ground
   - GameManager
+  - UIHealthBar
+  - PlayerHp
   layers:
   - Default
   - TransparentFX

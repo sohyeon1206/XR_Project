@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
+    protected FxManager FxManager => FxManager.Instance;
     public int Hp = 5;
 
     public void Damaged(int Damage)
@@ -12,6 +13,7 @@ public class Monster : MonoBehaviour
         if(Hp <= 0)
         {
             Destroy(this.gameObject);
+            FxManager.PlayFx(this.gameObject.transform, FxType.Explosion, new Vector3(0.0f, 1.0f, 0.0f));
         }
     }
 }
