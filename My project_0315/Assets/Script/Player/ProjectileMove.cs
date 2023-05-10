@@ -15,6 +15,7 @@ public class ProjectileMove : MonoBehaviour
     public PROJECTILETYPE projectileType;
 
     protected FxManager FxManager = FxManager.Instance;
+    protected AudioManager AudioManager => AudioManager.Instance;
 
     private void FixedUpdate()
     {
