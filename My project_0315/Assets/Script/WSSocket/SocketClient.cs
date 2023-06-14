@@ -4,6 +4,7 @@ using UnityEngine;
 using WebSocketSharp;               //C# ���� �� ��Ĺ�� �����ϴ� ���̺귯��
 using System.Text;
 using Newtonsoft.Json;              //JSON �� ����ϱ����� ���̺귯�� 
+using UnityEngine.UI;               // UI를 통해서 패킷 변경
 
 public class MyData
 {
@@ -12,6 +13,19 @@ public class MyData
     public int requestType;                     // ��û ��ȣ json�� ����
 }
 
+public class InfoData                           // 서버에서 제작한 패킷 선언
+{
+    public string type;
+    public InfoParams myParams;
+}
+
+public class InfoParams                         // 서버에서 제작한 패킷 선언 (내부))
+{
+    public string room;
+    public int loopTimeCount;
+}
+
+
 public class SocketClient : MonoBehaviour
 {
     private WebSocket webSocket;
@@ -19,12 +33,34 @@ public class SocketClient : MonoBehaviour
     private int connectionAttempt = 0;              // ���� �õ� Ƚ�� 
     private const int maxConnectionAttempts = 3;    // �ִ� ���� �õ� Ƚ��
 
-    MyData sendData = new MyData { message = "�޼��� ����" };
+    MyData sendData = new MyData { message = "메세지 전송" };
+
+    public Button sendButton;                       // JSON 전송 버튼
+    public Button ReconnectButton;                  // 연결이 끊겼을 때 다시 연결하는 버튼
+    public Text typeText;                           // 메세지 종류 데이터 받아와서 패킷에 보내기 위해 선언
+    public Text messageText;
+    public Text uiLoopCountText;                    // 루프 카운트를 확인하기 위한 UI
+
+    public int loopCount;
 
     // Start is called before the first frame update
     void Start()
     {
         ConnectWebSocekt();
+
+        sendButton.onClick.AddListener(() =>                        // SEND 버튼을 눌렀을 때
+        {
+            // JSON 데이터 생성
+            sendData.requestType = int.Parse(typeText.text);        // 0, 10, 100, 200, 300
+            sendData.message = messageText.text;
+            string jsonData = JsonConvert.SerializeObject(sendData);
+
+            webSocket.Send(jsonData);       // webSocket으로 JSON 데이터 전송
+        });
+        ReconnectButton.onClick.AddListener(() =>
+        {
+            ConnectWebSocekt();
+        });
     }
 
     void ConnectWebSocekt()
@@ -50,6 +86,14 @@ public class SocketClient : MonoBehaviour
         Debug.Log("Received JSON data : " + jsonData);
 
         MyData receivedData = JsonConvert.DeserializeObject<MyData>(jsonData);          //JSON �����͸� ��ü�� ������ȭ
+
+        InfoData infoData = JsonConvert.DeserializeObject<InfoData>(jsonData);
+
+        if(infoData != null)
+        {
+            string room = infoData.myParams.room;
+            loopCount = infoData.myParams.loopTimeCount;
+        }
 
         if (receivedData != null && !string.IsNullOrEmpty(receivedData.clientID))        //receivedData ���� ��� ���� ���� ��
         {
@@ -96,6 +140,8 @@ public class SocketClient : MonoBehaviour
         {
             return;
         }
+
+        uiLoopCountText.text = "LoopCount : " + loopCount.ToString();
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
