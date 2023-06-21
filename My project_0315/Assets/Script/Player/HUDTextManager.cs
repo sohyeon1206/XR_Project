@@ -13,6 +13,8 @@ public class HUDTextManager : MonoBehaviour
     public GameObject HudTextUp;                //올라가는 텍스트 프리팹 
     public GameObject canvasObject;             //Canvas Tranform 좌표 
 
+   
+
     // Update is called once per frame
     void Update()
     {

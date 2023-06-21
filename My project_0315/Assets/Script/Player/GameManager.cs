@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public HUDTextManager hudmanager;
+
     public void StartGame()
     {   //게임 시작 로직을 여기에 작성
         CurrentState = GameState.Playing;
@@ -82,9 +84,18 @@ public class GameManager : MonoBehaviour
         playerHpUIImage = GameObject.FindGameObjectWithTag("UIHealthBar").GetComponent<Image>();            //Tag로 UI를 찾는다.
         playerHp.Hp = 100;
         CurrentState = GameState.Start;
+        hudmanager = this.gameObject.GetComponent<HUDTextManager>();
+        hudmanager.canvasObject = GameObject.Find("Canvas");
+        BtnSample = GameObject.Find("GameOverButton").GetComponent<Button>();
+        hudmanager.hudText = GameObject.Find("Player_Text").GetComponent<Text>();
+        hudmanager.character = GameObject.Find("Tank_01.vox");
+
     }
     private void Update()
     {
         playerHpUIImage.fillAmount = (float)playerHp.Hp / 100.0f;                                            //체력에 비례하게 작업
+
+        if (Input.GetKey("escape"))             // esc를 누르면 게임 종료
+            Application.Quit();
     }
 }
